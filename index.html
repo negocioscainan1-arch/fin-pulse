@@ -32,7 +32,7 @@
     input{width:100%;border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px 16px;font-size:16px;outline:none;box-shadow:0 8px 24px rgba(70,30,0,.05)}
     .meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px;color:var(--muted);font-size:12px;font-weight:800}.share{border:0;background:var(--ink);color:#fff;border-radius:16px;width:100%;padding:11px 13px;font-weight:950;margin-top:12px}
     details{background:#fff;border:1px solid var(--line);border-radius:22px;padding:15px;margin:10px 0;box-shadow:0 8px 24px rgba(70,30,0,.06)}summary{font-weight:950;cursor:pointer}details p{font-size:14px;color:#443226;line-height:1.45}
-    canvas{width:100%;height:245px;border-radius:20px;background:#fff}.bottom{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 10px);width:min(472px,calc(100% - 28px));display:grid;grid-template-columns:repeat(5,1fr);gap:7px;background:rgba(24,15,9,.82);backdrop-filter:blur(24px);border-radius:27px;padding:8px;z-index:50}.bottom button{border:0;background:transparent;color:rgba(255,255,255,.67);font-size:10px;font-weight:850;padding:8px 2px;border-radius:18px}.bottom b{display:block;font-size:18px;margin-bottom:2px}.bottom button.active{background:rgba(255,255,255,.14);color:#fff}
+    canvas{width:100%;height:245px;border-radius:20px;background:#fff}.bottom{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 10px);width:min(472px,calc(100% - 28px));display:grid;grid-template-columns:repeat(4,1fr);gap:7px;background:rgba(24,15,9,.82);backdrop-filter:blur(24px);border-radius:27px;padding:8px;z-index:50}.bottom button{border:0;background:transparent;color:rgba(255,255,255,.67);font-size:10px;font-weight:850;padding:8px 2px;border-radius:18px}.bottom b{display:block;font-size:18px;margin-bottom:2px}.bottom button.active{background:rgba(255,255,255,.14);color:#fff}
     .loader{height:4px;background:#ffe1c4;border-radius:999px;overflow:hidden;margin:12px 0}.loader i{display:block;width:40%;height:100%;background:var(--orange);border-radius:999px;animation:load 1.2s infinite}@keyframes load{0%{transform:translateX(-100%)}100%{transform:translateX(260%)}}
     .empty{color:var(--muted);font-size:13px;text-align:center;padding:22px}.install{background:#15100c;color:#fff;border-radius:26px;padding:18px}.install p{color:rgba(255,255,255,.8)}
   </style>
@@ -51,7 +51,7 @@
       <button onclick="openTab('news',this)">News</button>
       <button onclick="openTab('insights',this)">Insights</button>
       <button onclick="openTab('dash',this)">Dash</button>
-      <button onclick="openTab('install',this)">Instalar</button>
+    
     </div>
 
     <section id="today" class="screen active">
@@ -80,17 +80,6 @@
       <div class="card"><h3>Leitura do painel</h3><p>O painel combina números públicos e leitura estratégica. Para enriquecer com dados reais de cartões, Pix e crédito, conecte fontes internas autorizadas ou bases públicas recorrentes.</p></div>
     </section>
 
-    <section id="install" class="screen">
-      <div class="title"><h2>Instalar</h2><span>iPhone</span></div>
-      <div class="install">
-        <h3>Adicionar à Tela de Início</h3>
-        <p>Abra no Safari → Compartilhar → Adicionar à Tela de Início. Depois ele abre como app em tela cheia.</p>
-      </div>
-      <div class="card">
-        <h3>Para atualizar sozinho</h3>
-        <p>Hospede o backend e troque a variável <b>API_BASE</b> no topo do script para a URL pública do servidor.</p>
-      </div>
-    </section>
   </main>
 
   <nav class="bottom">
@@ -98,7 +87,7 @@
     <button onclick="nav('news',this)"><b>◉</b>News</button>
     <button onclick="nav('insights',this)"><b>✦</b>IA</button>
     <button onclick="nav('dash',this)"><b>↗</b>Dash</button>
-    <button onclick="nav('install',this)"><b>＋</b>App</button>
+    
   </nav>
 
 <script>
