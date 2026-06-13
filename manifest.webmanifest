@@ -1,0 +1,9 @@
+{
+  "name": "Itaú Pulse Live",
+  "short_name": "Itaú Pulse",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fff4e8",
+  "theme_color": "#ec7000",
+  "icons": []
+}

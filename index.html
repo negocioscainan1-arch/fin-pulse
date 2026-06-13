@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="theme-color" content="#ec7000"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Itaú Pulse"/>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <title>Itaú Pulse Live</title>
+  <style>
+    :root{--orange:#ec7000;--blue:#003399;--cream:#fff4e8;--ink:#15100c;--muted:#73665d;--line:rgba(110,65,20,.13);--purple:#820ad1;--red:#b42318;--green:#168047;--card:rgba(255,255,255,.86)}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",system-ui,sans-serif;color:var(--ink);background:radial-gradient(circle at 10% -10%,rgba(236,112,0,.28),transparent 38%),radial-gradient(circle at 110% 0%,rgba(0,51,153,.16),transparent 36%),linear-gradient(180deg,#fff7ef,#fffaf6 45%,#fff)}
+    .app{max-width:500px;margin:0 auto;min-height:100vh;padding:env(safe-area-inset-top) 14px 96px}
+    .hero{margin-top:14px;border-radius:34px;padding:22px;color:#fff;background:linear-gradient(135deg,var(--orange),#ff9d32 42%,var(--blue));box-shadow:0 22px 70px rgba(70,30,0,.18);position:relative;overflow:hidden}
+    .hero:before{content:"";position:absolute;right:-70px;top:-70px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.15)}
+    .brand{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}.logo{width:62px;height:62px;border-radius:19px;background:var(--orange);display:grid;place-items:center;color:var(--blue);font-weight:950;font-size:24px;letter-spacing:-1.5px;border:3px solid rgba(255,255,255,.45)}
+    .status{font-size:12px;font-weight:850;background:rgba(255,255,255,.17);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:8px 11px;backdrop-filter:blur(14px)}
+    h1{font-size:35px;line-height:.93;margin:30px 0 8px;letter-spacing:-1.7px;position:relative;z-index:1}.hero p{position:relative;z-index:1;font-size:14px;line-height:1.42;color:rgba(255,255,255,.88);font-weight:650;margin:0}
+    .kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.kpi{background:rgba(255,255,255,.17);border:1px solid rgba(255,255,255,.23);border-radius:20px;padding:13px;backdrop-filter:blur(16px)}.kpi b{display:block;font-size:22px}.kpi span{font-size:11px;color:rgba(255,255,255,.78);font-weight:800}
+    .tabs{position:sticky;top:0;z-index:20;display:flex;gap:8px;overflow:auto;margin:12px -14px 8px;padding:10px 14px;background:rgba(255,250,246,.78);backdrop-filter:blur(20px)}.tabs button{border:0;border-radius:999px;padding:11px 14px;background:#fff;font-weight:900;white-space:nowrap;color:#2b1b12;box-shadow:0 8px 24px rgba(70,30,0,.08)}.tabs button.active{background:var(--blue);color:#fff}
+    .screen{display:none;animation:rise .25s ease}.screen.active{display:block}@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    .title{display:flex;align-items:flex-end;justify-content:space-between;margin:18px 2px 10px}.title h2{font-size:24px;margin:0;letter-spacing:-.8px}.title span{font-size:12px;color:var(--muted);font-weight:800}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:17px;margin:10px 0;box-shadow:0 14px 40px rgba(70,30,0,.08);backdrop-filter:blur(20px)}.card h3{font-size:18px;line-height:1.1;margin:9px 0 7px;letter-spacing:-.3px}.card p{font-size:14px;line-height:1.45;color:#3f2d23;margin:0}.badge{display:inline-flex;padding:7px 10px;border-radius:999px;font-size:11px;font-weight:950;background:#fff0df;color:#833b00;margin-right:5px}.red{background:#ffe8e5;color:var(--red)}.purple{background:#f3e7fb;color:var(--purple)}.blue{background:#eaf0ff;color:var(--blue)}.green{background:#e8f7ef;color:var(--green)}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.big{font-size:27px;color:var(--orange);font-weight:950;letter-spacing:-.8px}.label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:950}
+    input{width:100%;border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px 16px;font-size:16px;outline:none;box-shadow:0 8px 24px rgba(70,30,0,.05)}
+    .meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px;color:var(--muted);font-size:12px;font-weight:800}.share{border:0;background:var(--ink);color:#fff;border-radius:16px;width:100%;padding:11px 13px;font-weight:950;margin-top:12px}
+    details{background:#fff;border:1px solid var(--line);border-radius:22px;padding:15px;margin:10px 0;box-shadow:0 8px 24px rgba(70,30,0,.06)}summary{font-weight:950;cursor:pointer}details p{font-size:14px;color:#443226;line-height:1.45}
+    canvas{width:100%;height:245px;border-radius:20px;background:#fff}.bottom{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 10px);width:min(472px,calc(100% - 28px));display:grid;grid-template-columns:repeat(5,1fr);gap:7px;background:rgba(24,15,9,.82);backdrop-filter:blur(24px);border-radius:27px;padding:8px;z-index:50}.bottom button{border:0;background:transparent;color:rgba(255,255,255,.67);font-size:10px;font-weight:850;padding:8px 2px;border-radius:18px}.bottom b{display:block;font-size:18px;margin-bottom:2px}.bottom button.active{background:rgba(255,255,255,.14);color:#fff}
+    .loader{height:4px;background:#ffe1c4;border-radius:999px;overflow:hidden;margin:12px 0}.loader i{display:block;width:40%;height:100%;background:var(--orange);border-radius:999px;animation:load 1.2s infinite}@keyframes load{0%{transform:translateX(-100%)}100%{transform:translateX(260%)}}
+    .empty{color:var(--muted);font-size:13px;text-align:center;padding:22px}.install{background:#15100c;color:#fff;border-radius:26px;padding:18px}.install p{color:rgba(255,255,255,.8)}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div class="brand"><div class="logo">itaú</div><div class="status" id="syncStatus">sincronizando</div></div>
+      <h1>Itaú Pulse Live</h1>
+      <p>Briefing bancário com IA, notícias atualizadas, conexões com Itaú, cartões, Pix, pagamentos, crédito, risco e concorrência.</p>
+      <div class="kpis" id="heroKpis"></div>
+    </section>
+
+    <div class="tabs">
+      <button class="active" onclick="openTab('today',this)">Hoje</button>
+      <button onclick="openTab('news',this)">News</button>
+      <button onclick="openTab('insights',this)">Insights</button>
+      <button onclick="openTab('dash',this)">Dash</button>
+      <button onclick="openTab('install',this)">Instalar</button>
+    </div>
+
+    <section id="today" class="screen active">
+      <div class="title"><h2>Resumo do dia</h2><span id="dateLabel">agora</span></div>
+      <div id="briefLoader" class="loader"><i></i></div>
+      <div id="dailyBrief"></div>
+      <div class="title"><h2>Top notícias</h2><span>relevância</span></div>
+      <div id="topNews"></div>
+    </section>
+
+    <section id="news" class="screen">
+      <div class="title"><h2>Notícias</h2><span>busca IA</span></div>
+      <input id="search" placeholder="Buscar Itaú, Nubank, Pix, cartões..." oninput="renderNews()"/>
+      <div id="newsList"></div>
+    </section>
+
+    <section id="insights" class="screen">
+      <div class="title"><h2>Insights executivos</h2><span>IA</span></div>
+      <div id="insightList"></div>
+    </section>
+
+    <section id="dash" class="screen">
+      <div class="title"><h2>Dashboard</h2><span>setor</span></div>
+      <div class="card"><canvas id="chartProfit"></canvas></div>
+      <div class="card"><canvas id="chartRoe"></canvas></div>
+      <div class="card"><h3>Leitura do painel</h3><p>O painel combina números públicos e leitura estratégica. Para enriquecer com dados reais de cartões, Pix e crédito, conecte fontes internas autorizadas ou bases públicas recorrentes.</p></div>
+    </section>
+
+    <section id="install" class="screen">
+      <div class="title"><h2>Instalar</h2><span>iPhone</span></div>
+      <div class="install">
+        <h3>Adicionar à Tela de Início</h3>
+        <p>Abra no Safari → Compartilhar → Adicionar à Tela de Início. Depois ele abre como app em tela cheia.</p>
+      </div>
+      <div class="card">
+        <h3>Para atualizar sozinho</h3>
+        <p>Hospede o backend e troque a variável <b>API_BASE</b> no topo do script para a URL pública do servidor.</p>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom">
+    <button class="active" onclick="nav('today',this)"><b>⌂</b>Hoje</button>
+    <button onclick="nav('news',this)"><b>◉</b>News</button>
+    <button onclick="nav('insights',this)"><b>✦</b>IA</button>
+    <button onclick="nav('dash',this)"><b>↗</b>Dash</button>
+    <button onclick="nav('install',this)"><b>＋</b>App</button>
+  </nav>
+
+<script>
+const API_BASE = "http://localhost:8000"; // troque pela URL do Render/Railway quando publicar
+
+let state = { news: [], insights: [], metrics: [], summary: null, offline: false };
+
+const fallback = {
+  summary: {
+    headline: "Disputa bancária virou frequência, dados e custo de servir",
+    executive_summary: "O Itaú segue forte em rentabilidade, risco e portfólio. Nubank pressiona pela frequência diária e eficiência. Cartões, Pix, contestação, crédito e fraude são os pontos em que experiência e inteligência de dados mais influenciam o resultado.",
+    itau_meaning: "Para o Itaú, o foco deve ser defender principalidade com jornadas mais simples, comunicação clara em fatura/contestação, IA operacional e personalização de limite/crédito.",
+    risks: ["Perda de frequência transacional para bancos digitais", "Fraude e golpes em pagamentos instantâneos", "Aumento de inadimplência em ciclos de crédito", "Custo de servir em canais assistidos"],
+    opportunities: ["IA em contestação e atendimento", "Motor de autorização inteligente", "Explicador de fatura e estorno", "Limite dinâmico orientado por risco e valor"]
+  },
+  metrics: [
+    {name:"Lucro Itaú", bank:"Itaú", value:12.3, unit:"R$ bi"},
+    {name:"ROE Itaú", bank:"Itaú", value:24.8, unit:"%"},
+    {name:"Clientes Nu", bank:"Nubank", value:135, unit:"mi+"},
+    {name:"Eficiência Nu", bank:"Nubank", value:17.6, unit:"%"}
+  ],
+  news: [
+    {id:"1",title:"Itaú mantém rentabilidade premium e disciplina de crédito",source:"Demo",summary:"Leitura reforça vantagem de balanço, risco e portfólio.",bank_tags:["Itaú"],topic_tags:["resultado","crédito"],impact_level:"high",relevance_score:.94,url:"#"},
+    {id:"2",title:"Nubank amplia pressão por frequência e principalidade",source:"Demo",summary:"A disputa avança para uso diário, cartões, Pix e dados transacionais.",bank_tags:["Nubank"],topic_tags:["cartões","pagamentos"],impact_level:"high",relevance_score:.91,url:"#"},
+    {id:"3",title:"Pix, fraude e contestação ganham peso estratégico",source:"Demo",summary:"Bancos precisam equilibrar segurança, aprovação e experiência.",bank_tags:["Setor"],topic_tags:["Pix","fraude","contestação"],impact_level:"medium",relevance_score:.82,url:"#"}
+  ],
+  insights: [
+    {title:"O risco é perder frequência, não só cliente",subtitle:"Principalidade depende do dia a dia.",body:"Mesmo que o cliente mantenha Itaú, usar outro player para compras e Pix reduz dados, relacionamento e oportunidades de monetização.",impact_level:"high",key_numbers:["Cartões","Pix","Share of wallet"],recommended_actions:["Medir frequência por cliente","Atacar jornadas de atrito","Aumentar personalização"]},
+    {title:"Contestação é alavanca de confiança",subtitle:"Chargeback é momento de verdade.",body:"A jornada de contestação conecta risco, CX, custo operacional, fraude e reclamações. Explicar status e pedir documentos certos reduz rechamada.",impact_level:"high",key_numbers:["CX","Risco","Custo"],recommended_actions:["Automatizar classificação","Reduzir rechamada","Melhorar explicação de fatura"]}
+  ]
+};
+
+function normalizeBrief(data){
+  state.summary = data.summary || data;
+  state.news = data.top_news || data.news || fallback.news;
+  state.insights = data.insights || fallback.insights;
+  state.metrics = data.metrics || fallback.metrics;
+}
+async function load(){
+  document.getElementById('briefLoader').style.display='block';
+  try{
+    const r = await fetch(API_BASE + "/brief/live", {cache:"no-store"});
+    if(!r.ok) throw new Error("api offline");
+    const data = await r.json();
+    normalizeBrief(data);
+    state.offline=false;
+    document.getElementById('syncStatus').textContent='online';
+  }catch(e){
+    state.summary=fallback.summary;state.news=fallback.news;state.insights=fallback.insights;state.metrics=fallback.metrics;state.offline=true;
+    document.getElementById('syncStatus').textContent='demo offline';
+  }
+  document.getElementById('briefLoader').style.display='none';
+  renderAll();
+}
+function renderAll(){renderKpis();renderBrief();renderNews();renderInsights();drawCharts();}
+function badge(level){return level==="critical"||level==="high"?"red":level==="medium"?"blue":"green"}
+function renderKpis(){
+  document.getElementById('heroKpis').innerHTML=state.metrics.slice(0,4).map(m=>`<div class="kpi"><b>${m.value} ${m.unit}</b><span>${m.name}</span></div>`).join('');
+}
+function renderBrief(){
+  const s=state.summary||fallback.summary;
+  document.getElementById('dateLabel').textContent=new Date().toLocaleDateString('pt-BR');
+  document.getElementById('dailyBrief').innerHTML=`
+  <div class="card"><span class="badge red">${state.offline?'Demo':'IA'}</span><h3>${s.headline}</h3><p>${s.executive_summary}</p><button class="share" onclick="shareText('${s.headline.replaceAll("'","")}')">Compartilhar resumo</button></div>
+  <details open><summary>O que isso significa para o Itaú?</summary><p>${s.itau_meaning||'O movimento deve ser lido pelo impacto em principalidade, cartões, Pix, crédito, risco, atendimento e custo de servir.'}</p></details>
+  <details><summary>Riscos monitorados</summary><p>${(s.risks||[]).map(x=>'• '+x).join('<br>')}</p></details>
+  <details><summary>Oportunidades</summary><p>${(s.opportunities||[]).map(x=>'• '+x).join('<br>')}</p></details>`;
+  document.getElementById('topNews').innerHTML=state.news.slice(0,3).map(newsCard).join('');
+}
+function newsCard(n){
+  return `<div class="card"><span class="badge ${badge(n.impact_level)}">${n.impact_level||'medium'}</span><span class="badge">${(n.bank_tags||[])[0]||'Setor'}</span><h3>${n.title}</h3><p>${n.summary||''}</p><div class="meta">${(n.topic_tags||[]).map(t=>`<span>#${t}</span>`).join('')}</div><button class="share" onclick="openUrl('${n.url||'#'}')">Abrir fonte</button></div>`;
+}
+function renderNews(){
+  const q=(document.getElementById('search')?.value||'').toLowerCase();
+  const items=state.news.filter(n=>(n.title+(n.summary||'')+(n.bank_tags||[]).join(' ')+(n.topic_tags||[]).join(' ')).toLowerCase().includes(q));
+  document.getElementById('newsList').innerHTML=items.length?items.map(newsCard).join(''):'<div class="empty">Nada encontrado.</div>';
+}
+function renderInsights(){
+  document.getElementById('insightList').innerHTML=state.insights.map(i=>`
+  <div class="card"><span class="badge ${badge(i.impact_level)}">${i.impact_level||'high'}</span><h3>${i.title}</h3><p><b>${i.subtitle||''}</b></p><p style="margin-top:8px">${i.body}</p><div class="meta">${(i.key_numbers||[]).map(k=>`<span>${k}</span>`).join('')}</div><details><summary>Ações recomendadas</summary><p>${(i.recommended_actions||[]).map(a=>'• '+a).join('<br>')}</p></details></div>`).join('');
+}
+function openTab(id,btn){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');setTimeout(drawCharts,80)}
+function nav(id,btn){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');setTimeout(drawCharts,80)}
+function openUrl(url){if(url==='#'){alert('Fonte demonstrativa. Conecte o backend para notícias reais.')}else{location.href=url}}
+function shareText(text){if(navigator.share){navigator.share({title:'Itaú Pulse',text})}else{navigator.clipboard.writeText(text);alert('Copiado!')}}
+function drawBar(id,labels,values,title){let c=document.getElementById(id);if(!c)return;let r=c.getBoundingClientRect(),d=window.devicePixelRatio||1;c.width=r.width*d;c.height=r.height*d;let x=c.getContext('2d');x.scale(d,d);let w=r.width,h=r.height,p=38;x.clearRect(0,0,w,h);x.fillStyle='#73665d';x.font='12px -apple-system';x.fillText(title,14,22);let max=Math.max(...values)*1.18,bw=(w-p-20)/values.length*.6;values.forEach((v,i)=>{let xx=p+i*((w-p-20)/values.length)+bw*.25,bh=(v/max)*(h-78),yy=h-34-bh;let g=x.createLinearGradient(0,yy,0,h-34);g.addColorStop(0,'#ec7000');g.addColorStop(1,'#ffb267');x.fillStyle=g;round(x,xx,yy,bw,bh,10);x.fill();x.fillStyle='#15100c';x.font='800 12px -apple-system';x.fillText(v.toLocaleString('pt-BR'),xx,yy-7);x.fillStyle='#73665d';x.font='11px -apple-system';x.fillText(labels[i],xx,h-13)})}
+function round(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function drawCharts(){drawBar('chartProfit',['Itaú','Bradesco','Sant.','BB'],[12.3,6.8,3.8,3.4],'Lucro 1T26 — R$ bi');drawBar('chartRoe',['Itaú','Nu','Brad.','Sant.','BB'],[24.8,29,15.8,16,7.3],'ROE / eficiência competitiva — %')}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{})}
+load();
+setInterval(load, 30*60*1000);
+</script>
+</body>
+</html>
