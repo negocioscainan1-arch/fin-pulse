@@ -95,6 +95,27 @@
 .metric-card canvas{
   border-radius:0 0 26px 26px;
 }
+    .filter-row{
+  display:flex;
+  gap:8px;
+  margin:10px 0 12px;
+}
+
+.filter-btn{
+  border:0;
+  border-radius:999px;
+  padding:10px 13px;
+  background:#fff;
+  color:#2b1b12;
+  font-size:12px;
+  font-weight:900;
+  box-shadow:0 8px 24px rgba(70,30,0,.08);
+}
+
+.filter-btn.active{
+  background:var(--blue);
+  color:#fff;
+}
   </style>
 </head>
 <body>
@@ -125,6 +146,10 @@
     <section id="news" class="screen">
       <div class="title"><h2>Notícias</h2><span>busca IA</span></div>
       <input id="search" placeholder="Buscar Itaú, Nubank, Pix, cartões..." oninput="renderNews()"/>
+      <div class="filter-row">
+  <button id="filterRelevant" class="filter-btn active" onclick="setNewsFilter('relevance')">Mais relevantes</button>
+  <button id="filterRecent" class="filter-btn" onclick="setNewsFilter('recent')">Mais recentes</button>
+</div>
       <div id="newsList"></div>
     </section>
 
@@ -520,7 +545,16 @@
 <script>
 const API_BASE = "https://itau-pulse-api.onrender.com"; // troque pela URL do Render/Railway quando publicar
 
-let state = { news: [], insights: [], metrics: [], summary: null, offline: false };
+let state = { 
+  news: [], 
+  recentNews: [],
+  insights: [], 
+  metrics: [], 
+  summary: null, 
+  offline: false 
+};
+
+let newsFilter = 'relevance';
 
 const fallback = {
   summary: {
@@ -550,6 +584,7 @@ const fallback = {
 function normalizeBrief(data){
   state.summary = data.summary || data;
   state.news = data.top_news || data.news || fallback.news;
+  state.recentNews = data.recent_news || data.top_news || fallback.news;
   state.insights = data.insights || fallback.insights;
   state.metrics = data.metrics || fallback.metrics;
 }
@@ -621,10 +656,34 @@ function newsCard(n){
     </button>
   </div>`;
 }
+  function setNewsFilter(type){
+  newsFilter = type;
+
+  document.getElementById('filterRelevant')?.classList.toggle('active', type === 'relevance');
+  document.getElementById('filterRecent')?.classList.toggle('active', type === 'recent');
+
+  renderNews();
+}
 function renderNews(){
   const q=(document.getElementById('search')?.value||'').toLowerCase();
-  const items=state.news.filter(n=>(n.title+(n.summary||'')+(n.bank_tags||[]).join(' ')+(n.topic_tags||[]).join(' ')).toLowerCase().includes(q));
-  document.getElementById('newsList').innerHTML=items.length?items.map(newsCard).join(''):'<div class="empty">Nada encontrado.</div>';
+
+  let baseList = newsFilter === 'recent'
+    ? state.recentNews
+    : state.news;
+
+  let items = baseList.filter(n =>
+    (n.title+
+    (n.summary||'')+
+    (n.source||'')+
+    (n.bank_tags||[]).join(' ')+
+    (n.topic_tags||[]).join(' '))
+    .toLowerCase()
+    .includes(q)
+  );
+
+  document.getElementById('newsList').innerHTML = items.length
+    ? items.map(newsCard).join('')
+    : '<div class="empty">Nada encontrado.</div>';
 }
 function renderInsights(){
   document.getElementById('insightList').innerHTML=state.insights.map(i=>`
