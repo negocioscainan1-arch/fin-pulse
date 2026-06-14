@@ -35,6 +35,66 @@
     canvas{width:100%;height:245px;border-radius:20px;background:#fff}.bottom{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 10px);width:min(472px,calc(100% - 28px));display:grid;grid-template-columns:repeat(4,1fr);gap:7px;background:rgba(24,15,9,.82);backdrop-filter:blur(24px);border-radius:27px;padding:8px;z-index:50}.bottom button{border:0;background:transparent;color:rgba(255,255,255,.67);font-size:10px;font-weight:850;padding:8px 2px;border-radius:18px}.bottom b{display:block;font-size:18px;margin-bottom:2px}.bottom button.active{background:rgba(255,255,255,.14);color:#fff}
     .loader{height:4px;background:#ffe1c4;border-radius:999px;overflow:hidden;margin:12px 0}.loader i{display:block;width:40%;height:100%;background:var(--orange);border-radius:999px;animation:load 1.2s infinite}@keyframes load{0%{transform:translateX(-100%)}100%{transform:translateX(260%)}}
     .empty{color:var(--muted);font-size:13px;text-align:center;padding:22px}.install{background:#15100c;color:#fff;border-radius:26px;padding:18px}.install p{color:rgba(255,255,255,.8)}
+    .metric-card{
+  padding:0;
+  overflow:hidden;
+}
+
+.metric-info{
+  padding:17px 17px 8px;
+}
+
+.metric-header{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+
+.metric-header h3{
+  margin:0 0 6px;
+  font-size:18px;
+  line-height:1.1;
+}
+
+.metric-header p{
+  margin:0;
+  font-size:13px;
+  line-height:1.35;
+  color:#3f2d23;
+}
+
+.winner{
+  flex-shrink:0;
+  font-size:11px;
+  font-weight:950;
+  color:#7a3a00;
+  background:#fff0df;
+  border:1px solid rgba(236,112,0,.18);
+  border-radius:999px;
+  padding:7px 9px;
+  white-space:nowrap;
+}
+
+.metric-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:10px;
+}
+
+.metric-meta span{
+  font-size:11px;
+  font-weight:850;
+  color:#5b4b42;
+  background:#f7efe7;
+  border-radius:999px;
+  padding:6px 9px;
+}
+
+.metric-card canvas{
+  border-radius:0 0 26px 26px;
+}
   </style>
 </head>
 <body>
@@ -73,47 +133,378 @@
       <div id="insightList"></div>
     </section>
 
-    <section id="dash" class="screen">
-<div class="title">
-  <h2>Dashboard Bancário</h2>
-  <span>Indicadores comparativos do setor</span>
-</div>
+    
+<section id="dash" class="screen">
 
-<div class="card">
-  <h3>📊 Dashboard Setorial</h3>
-  <p>
-    Indicadores públicos dos principais bancos brasileiros.
-    Comparativos de rentabilidade, crédito, clientes,
-    pagamentos e eficiência operacional.
-  </p>
-</div>
+  <div class="title">
+    <h2>Dashboard Bancário</h2>
+    <span>comparativos</span>
+  </div>
 
-<div class="card"><canvas id="chartProfit"></canvas></div>
-<div class="card"><canvas id="chartRoe"></canvas></div>
-<div class="card"><canvas id="chartRevenue"></canvas></div>
-<div class="card"><canvas id="chartMargin"></canvas></div>
+  <div class="card">
+    <h3>📊 Indicadores do setor</h3>
+    <p>
+      Comparativos públicos e estimativos dos principais bancos, organizados por
+      rentabilidade, crédito, clientes, pagamentos, eficiência e mercado.
+    </p>
+  </div>
 
-<div class="card"><canvas id="chartCredit"></canvas></div>
-<div class="card"><canvas id="chartNpl"></canvas></div>
-<div class="card"><canvas id="chartCreditCost"></canvas></div>
-<div class="card"><canvas id="chartCoverage"></canvas></div>
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>💰 Lucro Líquido</h3>
+          <p>Quanto o banco efetivamente ganhou após despesas e impostos.</p>
+        </div>
+        <div class="winner">🏆 Itaú</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto maior, melhor</span>
+        <span>Escala: R$ bilhões</span>
+      </div>
+    </div>
+    <canvas id="chartProfit"></canvas>
+  </div>
 
-<div class="card"><canvas id="chartClients"></canvas></div>
-<div class="card"><canvas id="chartGrowth"></canvas></div>
-<div class="card"><canvas id="chartDigital"></canvas></div>
-<div class="card"><canvas id="chartSatisfaction"></canvas></div>
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>📈 ROE</h3>
+          <p>Retorno gerado sobre o patrimônio dos acionistas.</p>
+        </div>
+        <div class="winner">🏆 Nubank</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto maior, melhor</span>
+        <span>Escala: %</span>
+      </div>
+    </div>
+    <canvas id="chartRoe"></canvas>
+  </div>
 
-<div class="card"><canvas id="chartTpv"></canvas></div>
-<div class="card"><canvas id="chartPix"></canvas></div>
-<div class="card"><canvas id="chartCardsRevenue"></canvas></div>
-<div class="card"><canvas id="chartApproval"></canvas></div>
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>🏦 Receita Total</h3>
+          <p>Volume total de receitas geradas pelo banco no período.</p>
+        </div>
+        <div class="winner">🏆 Itaú</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto maior, melhor</span>
+        <span>Escala: R$ bilhões</span>
+      </div>
+    </div>
+    <canvas id="chartRevenue"></canvas>
+  </div>
 
-<div class="card"><canvas id="chartEfficiency"></canvas></div>
-<div class="card"><canvas id="chartServe"></canvas></div>
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>💵 Margem Financeira</h3>
+          <p>Resultado das operações de crédito, captação e tesouraria.</p>
+        </div>
+        <div class="winner">🏆 Itaú</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto maior, melhor</span>
+        <span>Escala: R$ bilhões</span>
+      </div>
+    </div>
+    <canvas id="chartMargin"></canvas>
+  </div>
 
-<div class="card"><canvas id="chartCreditShare"></canvas></div>
-<div class="card"><canvas id="chartCardsShare"></canvas></div>
-<div class="card"><canvas id="chartMarketCap"></canvas></div>
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>🏦 Carteira de Crédito</h3>
+          <p>Total emprestado para pessoas físicas, empresas e demais clientes.</p>
+        </div>
+        <div class="winner">🏆 Itaú</div>
+      </div>
+      <div class="metric-meta">
+        <span>Maior escala de operação</span>
+        <span>Escala: R$ bilhões</span>
+      </div>
+    </div>
+    <canvas id="chartCredit"></canvas>
+  </div>
+
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>⚠️ NPL 90+</h3>
+          <p>Percentual da carteira com atraso superior a 90 dias.</p>
+        </div>
+        <div class="winner">🏆 Itaú</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto menor, melhor</span>
+        <span>Escala: %</span>
+      </div>
+    </div>
+    <canvas id="chartNpl"></canvas>
+  </div>
+
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>📉 Custo do Crédito</h3>
+          <p>Impacto da inadimplência e provisões no resultado do banco.</p>
+        </div>
+        <div class="winner">🏆 Itaú</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto menor, melhor</span>
+        <span>Escala: %</span>
+      </div>
+    </div>
+    <canvas id="chartCreditCost"></canvas>
+  </div>
+
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>🛡️ Índice de Cobertura</h3>
+          <p>Capacidade de absorver perdas futuras com crédito.</p>
+        </div>
+        <div class="winner">🏆 Itaú</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto maior, melhor</span>
+        <span>Escala: %</span>
+      </div>
+    </div>
+    <canvas id="chartCoverage"></canvas>
+  </div>
+
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>👥 Base de Clientes</h3>
+          <p>Quantidade total de clientes atendidos pela instituição.</p>
+        </div>
+        <div class="winner">🏆 Nubank</div>
+      </div>
+      <div class="metric-meta">
+        <span>Maior alcance de mercado</span>
+        <span>Escala: milhões</span>
+      </div>
+    </div>
+    <canvas id="chartClients"></canvas>
+  </div>
+
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>🚀 Crescimento da Base</h3>
+          <p>Velocidade de expansão da base de clientes.</p>
+        </div>
+        <div class="winner">🏆 Nubank</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto maior, melhor</span>
+        <span>Escala: % ao ano</span>
+      </div>
+    </div>
+    <canvas id="chartGrowth"></canvas>
+  </div>
+
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>📱 Clientes Digitais</h3>
+          <p>Clientes que usam canais digitais como principal forma de relacionamento.</p>
+        </div>
+        <div class="winner">🏆 Nubank / Inter</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto maior, melhor</span>
+        <span>Escala: %</span>
+      </div>
+    </div>
+    <canvas id="chartDigital"></canvas>
+  </div>
+
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>❤️ Satisfação Digital</h3>
+          <p>Percepção relativa de experiência e relacionamento digital.</p>
+        </div>
+        <div class="winner">🏆 Nubank</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto maior, melhor</span>
+        <span>Escala: índice estimado</span>
+      </div>
+    </div>
+    <canvas id="chartSatisfaction"></canvas>
+  </div>
+
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>💳 TPV Cartões</h3>
+          <p>Volume financeiro movimentado em transações com cartões.</p>
+        </div>
+        <div class="winner">🏆 Itaú</div>
+      </div>
+      <div class="metric-meta">
+        <span>Maior participação em pagamentos</span>
+        <span>Escala: R$ bilhões</span>
+      </div>
+    </div>
+    <canvas id="chartTpv"></canvas>
+  </div>
+
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>⚡ Pix</h3>
+          <p>Indicador relativo de relevância e uso em pagamentos instantâneos.</p>
+        </div>
+        <div class="winner">🏆 Itaú</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto maior, melhor</span>
+        <span>Escala: índice relativo</span>
+      </div>
+    </div>
+    <canvas id="chartPix"></canvas>
+  </div>
+
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>💰 Receita de Cartões</h3>
+          <p>Receita estimada gerada pelo negócio de cartões.</p>
+        </div>
+        <div class="winner">🏆 Itaú</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto maior, melhor</span>
+        <span>Escala: R$ bilhões</span>
+      </div>
+    </div>
+    <canvas id="chartCardsRevenue"></canvas>
+  </div>
+
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>✅ Taxa de Aprovação</h3>
+          <p>Percentual de transações aprovadas pelos sistemas de autorização.</p>
+        </div>
+        <div class="winner">🏆 Itaú</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto maior, melhor</span>
+        <span>Escala: %</span>
+      </div>
+    </div>
+    <canvas id="chartApproval"></canvas>
+  </div>
+
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>⚙️ Índice de Eficiência</h3>
+          <p>Quanto o banco gasta para gerar receita.</p>
+        </div>
+        <div class="winner">🏆 Nubank</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto menor, melhor</span>
+        <span>Escala: %</span>
+      </div>
+    </div>
+    <canvas id="chartEfficiency"></canvas>
+  </div>
+
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>📞 Custo de Servir</h3>
+          <p>Índice relativo de custo operacional para atender e operar clientes.</p>
+        </div>
+        <div class="winner">🏆 Nubank</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto menor, melhor</span>
+        <span>Escala: índice relativo</span>
+      </div>
+    </div>
+    <canvas id="chartServe"></canvas>
+  </div>
+
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>🏆 Market Share Crédito</h3>
+          <p>Participação estimada no mercado brasileiro de crédito.</p>
+        </div>
+        <div class="winner">🏆 Itaú</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto maior, melhor</span>
+        <span>Escala: %</span>
+      </div>
+    </div>
+    <canvas id="chartCreditShare"></canvas>
+  </div>
+
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>💳 Market Share Cartões</h3>
+          <p>Participação estimada no mercado de cartões.</p>
+        </div>
+        <div class="winner">🏆 Itaú</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto maior, melhor</span>
+        <span>Escala: %</span>
+      </div>
+    </div>
+    <canvas id="chartCardsShare"></canvas>
+  </div>
+
+  <div class="card metric-card">
+    <div class="metric-info">
+      <div class="metric-header">
+        <div>
+          <h3>📈 Market Cap</h3>
+          <p>Valor de mercado atribuído aos bancos listados em bolsa.</p>
+        </div>
+        <div class="winner">🏆 Nubank</div>
+      </div>
+      <div class="metric-meta">
+        <span>Quanto maior, melhor</span>
+        <span>Escala: US$ bilhões</span>
+      </div>
+    </div>
+    <canvas id="chartMarketCap"></canvas>
+  </div>
     </section>
 
   </main>
@@ -216,127 +607,127 @@ function drawCharts(){
   drawBar('chartProfit',
     ['Itaú','Nu','Brad.','Sant.','BB'],
     [12.3,2.8,6.8,3.8,3.4],
-    '💰 Lucro Líquido | Quanto o banco efetivamente ganhou'
+    'Lucro líquido'
   );
 
   drawBar('chartRoe',
     ['Itaú','Nu','Brad.','Sant.','BB'],
     [24.8,29,15.8,16,7.3],
-    '📈 ROE | Retorno sobre patrimônio'
+    'ROE'
   );
 
   drawBar('chartRevenue',
     ['Itaú','Nu','Brad.','Sant.','BB'],
     [44,11,30,18,29],
-    '🏦 Receita Total | Receita trimestral'
+    'Receita total'
   );
 
   drawBar('chartMargin',
     ['Itaú','Brad.','Sant.','BB'],
     [31,22,15,20],
-    '💵 Margem Financeira | Resultado das operações financeiras'
+    'Margem financeira'
   );
 
   drawBar('chartCredit',
     ['Itaú','BB','Brad.','Sant.','Nu'],
     [1483,1300,1090,680,185],
-    '🏦 Carteira de Crédito | Total emprestado'
+    'Carteira de crédito'
   );
 
   drawBar('chartNpl',
     ['Itaú','Nu','Brad.','Sant.','BB'],
     [1.9,6.5,4.2,3.2,5.0],
-    '⚠️ NPL 90+ | Inadimplência acima de 90 dias'
+    'NPL 90+'
   );
 
   drawBar('chartCreditCost',
     ['Itaú','Brad.','Sant.','BB'],
     [4.1,5.6,4.8,6.1],
-    '📉 Custo do Crédito | Impacto da inadimplência'
+    'Custo do crédito'
   );
 
   drawBar('chartCoverage',
     ['Itaú','Brad.','Sant.','BB'],
     [245,180,195,210],
-    '🛡️ Cobertura | Proteção contra perdas'
+    'Índice de cobertura'
   );
 
   drawBar('chartClients',
     ['Nu','BB','Brad.','Itaú','Sant.'],
     [135,82,78,70,66],
-    '👥 Clientes | Base total de clientes'
+    'Base de clientes'
   );
 
   drawBar('chartGrowth',
     ['Nu','Itaú','BB','Brad.','Sant.'],
     [18,5,3,2,1],
-    '🚀 Crescimento | Expansão da base'
+    'Crescimento da base'
   );
 
   drawBar('chartDigital',
     ['Nu','Itaú','Inter','BB','Brad.'],
     [100,89,100,72,68],
-    '📱 Clientes Digitais | Uso dos canais digitais'
+    'Clientes digitais'
   );
 
   drawBar('chartSatisfaction',
     ['Nu','Itaú','Inter','BB','Brad.'],
     [86,78,76,72,70],
-    '❤️ Satisfação | Experiência dos clientes'
+    'Satisfação digital'
   );
 
   drawBar('chartTpv',
     ['Itaú','BB','Brad.','Sant.'],
     [1200,650,610,480],
-    '💳 TPV Cartões | Volume movimentado'
+    'TPV cartões'
   );
 
   drawBar('chartPix',
     ['Itaú','Nu','BB','Brad.'],
     [100,95,90,75],
-    '⚡ Pix | Utilização relativa'
+    'Pix'
   );
 
   drawBar('chartCardsRevenue',
     ['Itaú','BB','Brad.','Sant.'],
     [16,8,9,6],
-    '💰 Receita Cartões | Resultado do negócio de cartões'
+    'Receita de cartões'
   );
 
   drawBar('chartApproval',
     ['Itaú','Nu','Brad.','Sant.'],
     [97.5,96.8,95.4,95.0],
-    '✅ Aprovação | Taxa de transações aprovadas'
+    'Taxa de aprovação'
   );
 
   drawBar('chartEfficiency',
     ['Itaú','Nu','BB','Brad.','Sant.'],
     [39,31,43,46,42],
-    '⚙️ Eficiência | Quanto menor, melhor'
+    'Índice de eficiência'
   );
 
   drawBar('chartServe',
     ['Nu','Itaú','Inter','BB'],
     [1.0,2.3,1.4,3.2],
-    '📞 Custo de Servir | Custo operacional por cliente'
+    'Custo de servir'
   );
 
   drawBar('chartCreditShare',
     ['Itaú','BB','Brad.','Sant.','Nu'],
     [21,19,16,11,3],
-    '🏆 Market Share Crédito'
+    'Market share crédito'
   );
 
   drawBar('chartCardsShare',
     ['Itaú','BB','Brad.','Sant.'],
     [29,17,15,11],
-    '💳 Market Share Cartões'
+    'Market share cartões'
   );
 
   drawBar('chartMarketCap',
     ['Nu','Itaú','BB','Sant.','Brad.'],
     [65,58,22,18,15],
-    '📈 Market Cap | Valor de mercado'
+    'Market cap'
   );
 }
 if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{})}
