@@ -584,8 +584,42 @@ function renderBrief(){
   <details><summary>Oportunidades</summary><p>${(s.opportunities||[]).map(x=>'• '+x).join('<br>')}</p></details>`;
   document.getElementById('topNews').innerHTML=state.news.slice(0,3).map(newsCard).join('');
 }
+function formatDate(value){
+
+  if(!value) return 'Data não informada';
+
+  const d = new Date(value);
+
+  if(isNaN(d)) return 'Data não informada';
+
+  return d.toLocaleString('pt-BR',{
+    day:'2-digit',
+    month:'2-digit',
+    year:'2-digit',
+    hour:'2-digit',
+    minute:'2-digit'
+  });
+
+}
 function newsCard(n){
-  return `<div class="card"><span class="badge ${badge(n.impact_level)}">${n.impact_level||'medium'}</span><span class="badge">${(n.bank_tags||[])[0]||'Setor'}</span><h3>${n.title}</h3><p>${n.summary||''}</p><div class="meta">${(n.topic_tags||[]).map(t=>`<span>#${t}</span>`).join('')}</div><button class="share" onclick="openUrl('${n.url||'#'}')">Abrir fonte</button></div>`;
+  return `<div class="card">
+    <span class="badge ${badge(n.impact_level)}">${n.impact_level||'medium'}</span>
+    <span class="badge">${(n.bank_tags||[])[0]||'Setor'}</span>
+
+    <h3>${n.title}</h3>
+
+    <p>${n.summary||''}</p>
+
+    <div class="meta">
+      <span>🗓️ ${formatDate(n.published_at)}</span>
+      <span>📰 ${n.source||'Fonte não informada'}</span>
+      ${(n.topic_tags||[]).map(t=>`<span>#${t}</span>`).join('')}
+    </div>
+
+    <button class="share" onclick="openUrl('${n.url||'#'}')">
+      Abrir fonte
+    </button>
+  </div>`;
 }
 function renderNews(){
   const q=(document.getElementById('search')?.value||'').toLowerCase();
