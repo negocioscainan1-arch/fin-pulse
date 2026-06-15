@@ -685,9 +685,97 @@ function renderNews(){
     ? items.map(newsCard).join('')
     : '<div class="empty">Nada encontrado.</div>';
 }
+function countTags(items, field){
+  const counts = {};
+
+  items.forEach(n => {
+    (n[field] || []).forEach(tag => {
+      counts[tag] = (counts[tag] || 0) + 1;
+    });
+  });
+
+  return Object.entries(counts)
+    .sort((a,b) => b[1] - a[1])
+    .slice(0,5);
+}
+
+function renderRanking(title, subtitle, items, emoji){
+  if(!items.length) return '';
+
+  return `
+    <div class="card">
+      <span class="badge blue">${emoji}</span>
+      <h3>${title}</h3>
+      <p>${subtitle}</p>
+
+      <div class="meta" style="margin-top:12px; display:block;">
+        ${items.map((item, index) => `
+          <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;padding:9px 11px;border-radius:14px;background:#fff7ef;">
+            <span><b>${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '•'} ${item[0]}</b></span>
+            <span>${item[1]} citações</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderExecutiveSummary(){
+  const banks = countTags(state.news, 'bank_tags');
+  const topics = countTags(state.news, 'topic_tags');
+
+  const topBank = banks[0]?.[0] || 'os principais bancos';
+  const topTopic = topics[0]?.[0] || 'pagamentos';
+
+  return `
+    <div class="card">
+      <span class="badge green">Resumo</span>
+      <h3>⭐ Resumo executivo</h3>
+
+      <p>
+        • ${topTopic} aparece como um dos principais temas da base analisada.<br>
+        • ${topBank} está entre os players com maior presença nas notícias monitoradas.<br>
+        • Os movimentos recentes seguem concentrados em bancos, pagamentos, crédito, cartões, Pix e competição digital.
+      </p>
+    </div>
+  `;
+}
+
 function renderInsights(){
-  document.getElementById('insightList').innerHTML=state.insights.map(i=>`
-  <div class="card"><span class="badge ${badge(i.impact_level)}">${i.impact_level||'high'}</span><h3>${i.title}</h3><p><b>${i.subtitle||''}</b></p><p style="margin-top:8px">${i.body}</p><div class="meta">${(i.key_numbers||[]).map(k=>`<span>${k}</span>`).join('')}</div><details><summary>Ações recomendadas</summary><p>${(i.recommended_actions||[]).map(a=>'• '+a).join('<br>')}</p></details></div>`).join('');
+  const banks = countTags(state.news, 'bank_tags');
+  const topics = countTags(state.news, 'topic_tags');
+
+  const existingInsights = state.insights.map(i=>`
+    <div class="card">
+      <span class="badge ${badge(i.impact_level)}">${i.impact_level||'high'}</span>
+      <h3>${i.title}</h3>
+      <p><b>${i.subtitle||''}</b></p>
+      <p style="margin-top:8px">${i.body}</p>
+      <div class="meta">
+        ${(i.key_numbers||[]).map(k=>`<span>${k}</span>`).join('')}
+      </div>
+      <details>
+        <summary>Ações recomendadas</summary>
+        <p>${(i.recommended_actions||[]).map(a=>'• '+a).join('<br>')}</p>
+      </details>
+    </div>
+  `).join('');
+
+  document.getElementById('insightList').innerHTML =
+    existingInsights +
+    renderRanking(
+      '🏦 Bancos mais citados',
+      'Ranking dos bancos e players que mais aparecem na base de notícias analisada.',
+      banks,
+      'Ranking'
+    ) +
+    renderRanking(
+      '📌 Temas dominantes',
+      'Assuntos mais recorrentes na base de notícias monitorada pelo FinPulse.',
+      topics,
+      'Temas'
+    ) +
+    renderExecutiveSummary();
 }
 function openTab(id,btn){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');setTimeout(drawCharts,80)}
 function nav(id,btn){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');setTimeout(drawCharts,80)}
